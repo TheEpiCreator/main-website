@@ -9,17 +9,19 @@ const port = 8080
 const viewsDir = `${__dirname}/views`
 const publicDir = `${__dirname}/public`
 
-let commonElements
+let settings = JSON.parse(fs.readFileSync(`${__dirname}/settings.json`))
+if (typeof settings !== 'object') settings = { production: false }
 
 //setup HTTPS
-const httpsOptions = {
-    key: fs.readFileSync(process.env.HTTPS_KEY_DIR),
-    cert: fs.readFileSync(process.env.HTTPS_CERT_DIR)
+if (settings.production) {
+    var httpsOptions = {
+        key: fs.readFileSync(process.env.HTTPS_KEY_DIR),
+        cert: fs.readFileSync(process.env.HTTPS_CERT_DIR)
+    }
 }
-
 //set commonElements for later reference
 fs.readFile(`${publicDir}/data/commonElements.json`, (err, data) => {
-    if(err || !data) console.error("Error retrieving commonElements file:", err)
+    if (err || !data) console.error("Error retrieving commonElements file:", err)
     else commonElements = data
 })
 
@@ -59,7 +61,9 @@ app.get('*', (req, res) => {
     res.render(`${viewsDir}/index`)
 })
 
-https.createServer(httpsOptions, app)
-.listen(port, () => {
-    console.log(`App listening on port ${port}`)
-})
+if (settings.production) {
+    https.createServer(httpsOptions, app)
+        .listen(port, () => console.log(`Listening at port ${port}`))
+} else {
+    app.listen(port, () => console.log(`Listening at port ${port}`))
+}
