@@ -13,8 +13,8 @@ let commonElements
 
 //setup HTTPS
 const httpsOptions = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
+    key: fs.readFileSync(process.env.HTTPS_KEY_DIR),
+    cert: fs.readFileSync(process.env.HTTPS_CERT_DIR)
 }
 
 //set commonElements for later reference
