@@ -1,14 +1,17 @@
+const https = require('https')
 const express = require('express')
 const ejs = require('ejs')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const { resolveMx } = require('dns')
 const app = express()
-const port = 3000
+const port = 8080
 const viewsDir = `${__dirname}/views`
 const publicDir = `${__dirname}/public`
 
 let commonElements
+
+//setup HTTPS
 
 //set commonElements for later reference
 fs.readFile(`${publicDir}/data/commonElements.json`, (err, data) => {

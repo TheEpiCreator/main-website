@@ -1,0 +1,36 @@
+{
+  "name": "main-website",
+  "version": "1.0.0",
+  "description": "The main website for epcr.dev",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.4.0",
+    "crypto": "^1.0.1",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheEpiCreator/main-website.git"
+  },
+  "keywords": [
+    "website"
+  ],
+  "author": "EPCR",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/TheEpiCreator/main-website/issues"
+  },
+  "homepage": "https://github.com/TheEpiCreator/main-website#readme"
+}
