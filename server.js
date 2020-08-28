@@ -12,6 +12,10 @@ const publicDir = `${__dirname}/public`
 let commonElements
 
 //setup HTTPS
+const httpsOptions = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+}
 
 //set commonElements for later reference
 fs.readFile(`${publicDir}/data/commonElements.json`, (err, data) => {
@@ -55,4 +59,7 @@ app.get('*', (req, res) => {
     res.render(`${viewsDir}/index`)
 })
 
-app.listen(port, () => console.log(`app listening on port ${port}!`))
+https.createServer(httpsOptions, app)
+.listen(port, () => {
+    console.log(`App listening on port ${port}`)
+})
