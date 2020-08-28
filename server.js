@@ -8,15 +8,16 @@ const app = express()
 const port = 8080
 const viewsDir = `${__dirname}/views`
 const publicDir = `${__dirname}/public`
-
+console.log('something')
 let settings = JSON.parse(fs.readFileSync(`${__dirname}/settings.json`))
+console.log('something')
 if (typeof settings !== 'object') settings = { production: false }
 
 //setup HTTPS
-if (settings.production) {
+if (settings.production && settings.key_dir && settings.cert_dir) {
     var httpsOptions = {
-        key: fs.readFileSync(process.env.HTTPS_KEY_DIR),
-        cert: fs.readFileSync(process.env.HTTPS_CERT_DIR)
+        key: fs.readFileSync(settings.key_dir),
+        cert: fs.readFileSync(settings.cert_dir)
     }
 }
 //set commonElements for later reference
