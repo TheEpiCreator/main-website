@@ -1,6 +1,9 @@
 #settings
 settings.json
 
+#placeholder(used for testing regex
+placeholder.txt
+
 # Logs
 logs
 *.log

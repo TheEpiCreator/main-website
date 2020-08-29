@@ -1,9 +1,11 @@
 body {
     margin: 0;
     background: var(--palette-background);
-    font-family: 'Raleway', sans-serif;
-    font-weight: 600;
+    font-family: 'Montserrat', 'Poppins', sans-serif;
+    font-weight: 80;
+    line-height: 1.5em;
     color: var(--palette-dark);
+    text-rendering: optimizeLegibility;
 }
 
 #invisibleContent {
@@ -25,16 +27,17 @@ body {
 main {
     background: var(--palette-main);
     padding: 2em;
-    margin: 0;
+    margin: 4em;
     min-height: 5em;
 }
 
 /* 404 page */
 
-.text404 {
+.bigtext {
     font-size: 50vmin;
     font-family: 'Roboto', sans-serif;
     font-style: normal;
+    font-size: 1em;
     font-weight: 700;
     text-align: center;
     color: var(--palette-background-mod);
@@ -62,6 +65,7 @@ header {
     background: var(--palette-contrast);
     margin: 0;
     padding: 0;
+    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.4);
 }
 
 header::after {
@@ -90,7 +94,7 @@ header::after {
 .toolbar-item-container a {
     display: inline-block;
     max-height: 1em;
-    padding: 1em;
+    padding: 0.85em 1em 1.2em 1em;
     margin: 0;
     position: relative;
     transition: 130ms;

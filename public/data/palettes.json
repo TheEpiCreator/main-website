@@ -1,11 +1,11 @@
 {
-    "sandstonebeach_blue_orange": [
-        "#CAF0F8",
-        "#90E0EF",
-        "#0077B6",
-        "#00B4D8",
-        "#874000",
-        "#BC5F04",
-        "#03045E"
-    ]
+    "sandstonebeach_blue_orange": {
+        "main": "#36393f",
+        "main_mod": "#40444b",
+        "background": "#2f3136",
+        "background_mod": "#32353b",
+        "contrast": "#7289da",
+        "contrast_mod": "#677bc4",
+        "main_invert": "#ebebeb"
+    }
 }

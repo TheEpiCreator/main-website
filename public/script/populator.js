@@ -3,7 +3,10 @@
  */
 
 //set the url filepath for the site
-var filepath = window.location.href.match(/http[s]?:\/\/[A-Za-z0-9\-\.\_\~\:]+(.+)$/m)
+var filepath = window.location.href.match(/(http|https|ftp):\/\/[\w\.\-~:]+(\/[\w\.\-~\/]+)$/)
+//set url and handle no match
+if(filepath) filepath = filepath[2]
+else filepath = "/"
         
 ping = (path, callback) => {
     //ping server
@@ -22,8 +25,9 @@ ping("data/commonElements.json", data => {
     populateToolbar(toolbar, data.toolbar, "toolbar")
     //add fonts using toolbar data
     populateFonts(data.fonts)
-    //add main content
-    populateContent(data.pageContents)
+    //add main content, select dir
+    console.log(data.pageContents[filepath])
+    populateContent(data.pageContents[filepath])
 })
 
 //ping server for theme palettes
@@ -102,14 +106,15 @@ var populateFonts = (fontLinks) => {
 /**
  * Automatically creates and styles page-specific content
  * @param {Object} content An object containing all page-specific data
+ * @returns {Array} An array of all of the HTML tags making up the page content
  */
 var populateContent = (content) => {
+    
     //don't do anything in case of no content
     if (!content) {
         console.warn("No content for current webpage, leaving blank")
         return
     }
-
     //create content
     let contentArray = []
 
@@ -127,8 +132,8 @@ var populateContent = (content) => {
                     contentArray.push(imageQueue[item.content], 0, new HTMLTag("img", { src: data }).tag)
                 })
                 break
-            case "bigtext" || "header 1" || "h1":
-                //contentArray.push
+            case "bigtext" || "header 1" || "heading" || "h1":
+                contentArray.push(new HTMLTag("h1", { class: "bigtext"}, undefined, [item.content]))
                 break
         }
     }
@@ -148,6 +153,9 @@ var populateContent = (content) => {
 
     //populate webcrawler directives
     document.getElementsByName("robots")[0].setAttribute("content", content.botDirectives)
+
+    //return contents
+    return contentArray
 }
 
 /**
@@ -157,13 +165,13 @@ var populateContent = (content) => {
 var populateTheme = (palette) => {
     let themeTag = new CSSStyle({
         ":root": {
-            "--palette-main": palette[0],
-            "--palette-main-mod": palette[1],
-            "--palette-background": palette[2],
-            "--palette-background-mod": palette[3],
-            "--palette-contrast": palette[4],
-            "--palette-contrast-mod": palette[5],
-            "--palette-dark": palette[6],
+            "--palette-main": palette.main,
+            "--palette-main-mod": palette.main_mod,
+            "--palette-background": palette.background,
+            "--palette-background-mod": palette.background_mod,
+            "--palette-contrast": palette.contrast,
+            "--palette-contrast-mod": palette.contrast_mod,
+            "--palette-dark": palette.main_invert,
         }
     })
     themeTag.style.parent = document.body
