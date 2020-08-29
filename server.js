@@ -1,3 +1,4 @@
+const http = require('http')
 const https = require('https')
 const express = require('express')
 const ejs = require('ejs')
@@ -5,19 +6,23 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const { resolveMx } = require('dns')
 const app = express()
-const port = 8080
+//ports are as follows: [HTTP, HTTPS, Port8080(HTTP)]
+const ports = [80, 8080, 443]
+//list of all active servers
+var servers = []
 const viewsDir = `${__dirname}/views`
 const publicDir = `${__dirname}/public`
-console.log('something')
+//load settings
 let settings = JSON.parse(fs.readFileSync(`${__dirname}/settings.json`))
-console.log('something')
+//handle loss of settings file
 if (typeof settings !== 'object') settings = { production: false }
 
 //setup HTTPS
-if (settings.production && settings.key_dir && settings.cert_dir) {
+if (settings.production && settings.key_dir && settings.cert_dir && settings.ca_dir) {
     var httpsOptions = {
-        key: fs.readFileSync(settings.key_dir),
-        cert: fs.readFileSync(settings.cert_dir)
+        key: fs.readFileSync(settings.key_dir, 'utf-8'),
+        cert: fs.readFileSync(settings.cert_dir, 'utf-8'),
+        ca: fs.readFileSync(settings.ca_dir, 'utf-8')
     }
 }
 //set commonElements for later reference
@@ -62,9 +67,13 @@ app.get('*', (req, res) => {
     res.render(`${viewsDir}/index`)
 })
 
-if (settings.production) {
-    https.createServer(httpsOptions, app)
-        .listen(port, () => console.log(`Listening at port ${port}`))
-} else {
-    app.listen(port, () => console.log(`Listening at port ${port}`))
+//classic + 8080
+servers.push(http.createServer(app)
+    .listen(ports[0], () => console.log(`HTTP:// Listening at port ${ports[0]}`)))
+servers.push(http.createServer(app)
+    .listen(ports[1], () => console.log(`HTTP:// Listening at port ${ports[1]}`)))
+//secure
+if (settings.production && httpsOptions) {
+    servers.push(https.createServer(httpsOptions, app)
+        .listen(ports[2], () => console.log(`HTTPS:// Listening at port ${ports[2]}`)))
 }
