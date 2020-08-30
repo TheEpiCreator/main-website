@@ -3,12 +3,14 @@
  */
 
 //set the url filepath for the site
-var filepath = window.location.href.match(/(http|https|ftp):\/\/[\w\.\-~:]+(\/[\w\.\-~\/]+)$/)
-//set domain
-if(filepath[0]) var domain = filepath[0]
-//set url and handle no match
-if (filepath[2]) filepath = filepath[2]
-else filepath = "/"
+var filepath = window.location.href.match(/(http|https|ftp):\/\/[\w\.\-~:]+(\/*[\w\.\-~\/]*)$/)
+if (filepath) {
+    //set domain
+    if (filepath[0]) var domain = filepath[0]
+    //set url and handle no match
+    if (filepath[2]) filepath = filepath[2]
+    else filepath = "/"
+}
 
 ping = (path, callback) => {
     //ping server
@@ -28,14 +30,13 @@ ping("data/commonElements.json", data => {
     //add fonts using toolbar data
     populateFonts(data.fonts)
     //add main content, select dir
-    console.log(data.pageContents[filepath])
     populateContent(data.pageContents[filepath])
 })
 
 //ping server for theme palettes
 ping("data/palettes.json", data => {
     //apply themes
-    populateTheme(data.sandstonebeach_blue_orange)
+    populateTheme(data)
 })
 
 /**
@@ -47,7 +48,6 @@ var switchImageRes = (image) => {
     //directory to eventually be returned
     let imageDir
     let width = window.screen.width
-    console.log(width)
     switch (image.mode) {
         case "quality":
             if (width > 2560) {
@@ -56,7 +56,7 @@ var switchImageRes = (image) => {
                 imageDir = "3"
             } else if (width > 1280) {
                 imageDir = "2"
-            } else  if (width > 400)  {
+            } else if (width > 400) {
                 imageDir = "1"
             } else {
                 imageDir = "0"
@@ -68,7 +68,7 @@ var switchImageRes = (image) => {
                 imageDir = "3"
             } else if (width >= 1920) {
                 imageDir = "2"
-            } else  if (width > 400)  {
+            } else if (width > 400) {
                 imageDir = "1"
             } else {
                 imageDir = "0"
@@ -80,7 +80,7 @@ var switchImageRes = (image) => {
                 imageDir = "3"
             } else if (width >= 1600) {
                 imageDir = "2"
-            } else  if (width > 400)  {
+            } else if (width > 400) {
                 imageDir = "1"
             } else {
                 imageDir = "0"
@@ -92,7 +92,7 @@ var switchImageRes = (image) => {
                 imageDir = "3"
             } else if (width >= 1600) {
                 imageDir = "2"
-            } else  if (width > 400)  {
+            } else if (width > 400) {
                 imageDir = "1"
             } else {
                 imageDir = "0"
@@ -181,8 +181,7 @@ var populateContent = (content) => {
     if (!content) {
         console.warn("No content for current webpage, redirecting to 404 page")
         //prevent infinite loop if 404 page can't load
-        if(filepath !== "/404"){
-            console.log(filepath)
+        if (filepath !== "/404") {
             window.location.replace("/404")
         }
         return
@@ -211,7 +210,6 @@ var populateContent = (content) => {
     }
 
     //create container for content
-    console.log(contentArray)
     var contentContainer = new HTMLTag("main", { id: "contentContainer" }, undefined, contentArray)
 
     //set title
@@ -226,6 +224,9 @@ var populateContent = (content) => {
     //populate webcrawler directives
     document.getElementsByName("robots")[0].setAttribute("content", content.botDirectives)
 
+    //log contents
+    console.log(content.site.logWarn.text, content.site.logWarn.style)
+
     //return contents
     return contentArray
 }
@@ -235,20 +236,17 @@ var populateContent = (content) => {
  * @param {Arrray} palette The array of hex colors
  */
 var populateTheme = (palette) => {
-    let themeTag = new CSSStyle({
+    //set style
+    let style = {
         ":root": {
-            "transition-properties": "--palette-main,--palette-main-mod,--palette-background,--palette-background-mod,--palette-contrast,--palette-contrast-mod,--palette-dark",
+            "transition-properties": "",
             "transition-duration": "400ms",
             "transition-timing-function": "linear",
-            "--palette-main": palette.main,
-            "--palette-main-mod": palette.main_mod,
-            "--palette-background": palette.background,
-            "--palette-background-mod": palette.background_mod,
-            "--palette-contrast": palette.contrast,
-            "--palette-contrast-mod": palette.contrast_mod,
-            "--palette-dark": palette.main_invert,
         }
-    })
-    themeTag.style.parent = document.body
-    themeTag.style.toPosition("first")
+    }
+    //add palette item
+    for(let i in Object.keys){
+        
+    }
+    return new CSSStyle(style)
 }

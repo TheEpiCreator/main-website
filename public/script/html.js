@@ -262,8 +262,11 @@ class CSSStyle {
     constructor(styles) {
         this.html = new HTMLTag("style", { id: "generated-style", class: "generated-style" }, document.getElementById("invisibleContent"))
         this.css = styles
+        this.html.parent = document.body
+        this.html.toPosition("first")
     }
     set css(styles) {
+        this._css = styles
         let finalStringArray = []
         for (let selector of Object.entries(styles)) {
             let styleArray = Object.entries(selector[1])
@@ -277,5 +280,8 @@ class CSSStyle {
             finalStringArray.push(styleStringArray.join("\n"))
         }
         this.html.children = finalStringArray
+    }
+    get css() {
+        return this._css
     }
 }
