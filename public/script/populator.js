@@ -4,10 +4,12 @@
 
 //set the url filepath for the site
 var filepath = window.location.href.match(/(http|https|ftp):\/\/[\w\.\-~:]+(\/[\w\.\-~\/]+)$/)
+//set domain
+if(filepath[0]) var domain = filepath[0]
 //set url and handle no match
-if(filepath) filepath = filepath[2]
+if (filepath[2]) filepath = filepath[2]
 else filepath = "/"
-        
+
 ping = (path, callback) => {
     //ping server
     fetch(path).then(response => {
@@ -37,6 +39,69 @@ ping("data/palettes.json", data => {
 })
 
 /**
+ * Switches image directory to match current screen size
+ * @param {Object} image The image object
+ * @returns {String} The correct image directory
+ */
+var switchImageRes = (image) => {
+    //directory to eventually be returned
+    let imageDir
+    let width = window.screen.width
+    console.log(width)
+    switch (image.mode) {
+        case "quality":
+            if (width > 2560) {
+                imageDir = "4"
+            } else if (width > 1920) {
+                imageDir = "3"
+            } else if (width > 1280) {
+                imageDir = "2"
+            } else  if (width > 400)  {
+                imageDir = "1"
+            } else {
+                imageDir = "0"
+            }
+        case "speed":
+            if (width >= 3840) {
+                imageDir = "4"
+            } else if (width >= 2560) {
+                imageDir = "3"
+            } else if (width >= 1920) {
+                imageDir = "2"
+            } else  if (width > 400)  {
+                imageDir = "1"
+            } else {
+                imageDir = "0"
+            }
+        case "balanced":
+            if (width >= 3200) {
+                imageDir = "4"
+            } else if (width >= 2240) {
+                imageDir = "3"
+            } else if (width >= 1600) {
+                imageDir = "2"
+            } else  if (width > 400)  {
+                imageDir = "1"
+            } else {
+                imageDir = "0"
+            }
+        default:
+            if (width >= 3200) {
+                imageDir = "4"
+            } else if (width >= 2240) {
+                imageDir = "3"
+            } else if (width >= 1600) {
+                imageDir = "2"
+            } else  if (width > 400)  {
+                imageDir = "1"
+            } else {
+                imageDir = "0"
+            }
+    }
+    return `${image.src}/${imageDir}.${image.type}`
+}
+
+/**
  * Populates toolbar with menu elements according to elementMap
  * @param {HTMLTag} toolbar The object to be populated
  * @param {Object|JSON} elementMap The information used to populate the toolbar
@@ -45,7 +110,7 @@ ping("data/palettes.json", data => {
  */
 var populateToolbar = (toolbar, elementMap, prefix) => {
     //create toolbar|create header
-    var header = new HTMLTag("header", {id: "sticky"})
+    var header = new HTMLTag("header", { id: "sticky" })
     //push header to top
     header.toPosition("first")
     //create container
@@ -89,7 +154,7 @@ var populateToolbar = (toolbar, elementMap, prefix) => {
         }
     }
     let spacer = header.duplicate()
-    spacer.attributes = {id:"spacer", class:"pseudo-invisible invisible"}
+    spacer.attributes = { id: "spacer", class: "pseudo-invisible invisible" }
     return header
 }
 
@@ -111,10 +176,15 @@ var populateFonts = (fontLinks) => {
  * @returns {Array} An array of all of the HTML tags making up the page content
  */
 var populateContent = (content) => {
-    
+
     //don't do anything in case of no content
     if (!content) {
-        console.warn("No content for current webpage, leaving blank")
+        console.warn("No content for current webpage, redirecting to 404 page")
+        //prevent infinite loop if 404 page can't load
+        if(filepath !== "/404"){
+            console.log(filepath)
+            window.location.replace("/404")
+        }
         return
     }
     //create content
@@ -135,7 +205,7 @@ var populateContent = (content) => {
                 })
                 break
             case "bigtext" || "header 1" || "heading" || "h1":
-                contentArray.push(new HTMLTag("h1", { class: "bigtext"}, undefined, [item.content]))
+                contentArray.push(new HTMLTag("h1", { class: "bigtext" }, undefined, [item.content]))
                 break
         }
     }
@@ -149,7 +219,7 @@ var populateContent = (content) => {
 
     //set image above toolbar if it exists
     if (content.mainImage) {
-        var mainImage = new HTMLTag("div", {id: "topContainer"}, undefined, [new HTMLTag("img", { id: "mainImage", src: content.mainImage.src, alt: content.mainImage.alt }).tag])
+        var mainImage = new HTMLTag("div", { id: "topContainer" }, undefined, [new HTMLTag("img", { id: "mainImage", src: switchImageRes(content.mainImage), alt: content.mainImage.alt }).tag])
         mainImage.toPosition("first")
     }
 
@@ -167,6 +237,9 @@ var populateContent = (content) => {
 var populateTheme = (palette) => {
     let themeTag = new CSSStyle({
         ":root": {
+            "transition-properties": "--palette-main,--palette-main-mod,--palette-background,--palette-background-mod,--palette-contrast,--palette-contrast-mod,--palette-dark",
+            "transition-duration": "400ms",
+            "transition-timing-function": "linear",
             "--palette-main": palette.main,
             "--palette-main-mod": palette.main_mod,
             "--palette-background": palette.background,

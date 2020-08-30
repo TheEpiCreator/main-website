@@ -31,7 +31,7 @@ class HTMLTag {
         this._tag = tag
 
         //skip construction if tag is defined
-        if(tag) return this
+        if (tag) return this
 
         //create element
         this._tag = document.createElement(this._type)
@@ -244,6 +244,13 @@ class HTMLTag {
     /**
      * Removes the tag
      */
+    delete() {
+        this.remove()
+    }
+
+    /**
+     * Removes the tag
+     */
     remove() {
         this._tag.remove()
         this._tag = null
@@ -253,9 +260,11 @@ class HTMLTag {
 class CSSStyle {
     //TODO: add documentation and comments
     constructor(styles) {
-        this.style = new HTMLTag("style", { id: "generated-style", class: "generated-style" }, document.getElementById("invisibleContent"))
+        this.html = new HTMLTag("style", { id: "generated-style", class: "generated-style" }, document.getElementById("invisibleContent"))
+        this.css = styles
+    }
+    set css(styles) {
         let finalStringArray = []
-
         for (let selector of Object.entries(styles)) {
             let styleArray = Object.entries(selector[1])
             let styleStringArray = ["", `${selector[0]} {`]
@@ -267,6 +276,6 @@ class CSSStyle {
             styleStringArray.push("")
             finalStringArray.push(styleStringArray.join("\n"))
         }
-        this.style.children = finalStringArray
+        this.html.children = finalStringArray
     }
 }

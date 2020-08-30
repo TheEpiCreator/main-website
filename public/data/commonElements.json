@@ -25,41 +25,6 @@
             "name": "Test",
             "type": "link",
             "href": "test"
-        },
-        {
-            "name": "This is a Super Long Name",
-            "type": "link",
-            "href": "/"
-        },
-        {
-            "name": "This",
-            "type": "link",
-            "href": "/"
-        },
-        {
-            "name": "is",
-            "type": "link",
-            "href": "/"
-        },
-        {
-            "name": "a",
-            "type": "link",
-            "href": "/"
-        },
-        {
-            "name": "lot",
-            "type": "link",
-            "href": "/"
-        },
-        {
-            "name": "of",
-            "type": "link",
-            "href": "/"
-        },
-        {
-            "name": "buttons",
-            "type": "link",
-            "href": "/"
         }
     ],
     "fonts": [
@@ -68,10 +33,12 @@
     "pageContents": {
         "/": {
             "title": "Home",
-            "botDirectives": "follow, noimageindex",
+            "botDirectives": "follow, index",
             "mainImage": {
-                "src": "images/placeholder.jpg",
-                "alt": "<epcr.dev>"
+                "type": "webp",
+                "src": "images/weblogo",
+                "alt": "</epcr>",
+                "mode": "quality"
             },
             "mainContent": [
                 {
