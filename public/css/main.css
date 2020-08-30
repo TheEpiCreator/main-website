@@ -29,7 +29,7 @@ body {
 #mainImage {
     image-resolution: 100vw;
     width: 100%;
-    max-height: 25vw;
+    max-height: 25vmax;
     object-fit: cover;
     margin: 0;
     padding: 0;
@@ -38,8 +38,8 @@ body {
 
 main {
     background: var(--palette-main);
-    padding: 2em;
-    margin: 4em;
+    padding: 1.5em 2vw;
+    margin: 4vw;
     min-height: 5em;
 }
 
@@ -77,8 +77,7 @@ header {
     background: var(--palette-contrast);
     margin: 0;
     padding: 0;
-    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 500ms ease-out
+    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.5);
 }
 
 header::after {
@@ -91,7 +90,6 @@ header::after {
     position: fixed;
     top: 0;
     width: 100%;
-    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.4);
 }
 
 .toolbar-image {
