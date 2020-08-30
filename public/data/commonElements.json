@@ -1,4 +1,15 @@
 {
+    "site": {
+        "url": "epcr.dev",
+        "name": "epcr",
+        "author": "epcr",
+        "coder": "epcr",
+        "socialmedia": {
+            "discord": {
+                "link": "INSERT LINK HERE"
+            }
+        }
+    },
     "toolbar": [
         {
             "name": "Home",
@@ -58,7 +69,10 @@
         "/": {
             "title": "Home",
             "botDirectives": "follow, noimageindex",
-            "mainImage": "images/placeholder.jpg",
+            "mainImage": {
+                "src": "images/placeholder.jpg",
+                "alt": "<epcr.dev>"
+            },
             "mainContent": [
                 {
                     "type": "p",

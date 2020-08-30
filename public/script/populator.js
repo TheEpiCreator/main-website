@@ -45,7 +45,7 @@ ping("data/palettes.json", data => {
  */
 var populateToolbar = (toolbar, elementMap, prefix) => {
     //create toolbar|create header
-    let header = new HTMLTag("header")
+    var header = new HTMLTag("header", {id: "sticky"})
     //push header to top
     header.toPosition("first")
     //create container
@@ -88,7 +88,9 @@ var populateToolbar = (toolbar, elementMap, prefix) => {
                 break
         }
     }
-    return populatedElements
+    let spacer = header.duplicate()
+    spacer.attributes = {id:"spacer", class:"pseudo-invisible invisible"}
+    return header
 }
 
 /**
@@ -147,7 +149,7 @@ var populateContent = (content) => {
 
     //set image above toolbar if it exists
     if (content.mainImage) {
-        var mainImage = new HTMLTag("img", { id: "mainImage", src: content.mainImage, alt: "placeholder image" })
+        var mainImage = new HTMLTag("div", {id: "topContainer"}, undefined, [new HTMLTag("img", { id: "mainImage", src: content.mainImage.src, alt: content.mainImage.alt }).tag])
         mainImage.toPosition("first")
     }
 

@@ -20,13 +20,18 @@ class HTMLTag {
      * @param {Object} [attributes] An object containing the attributes and their values (ex. {id:"thisIsAnID"} means <tag id="thisIsAnID"> will be created)
      * @param {HTMLElement} [parent] A reference to the HTML element under which the tag should be appended
      * @param {ChildArray} [children] An array containing references to HTML objects or String objects that should be appended as a child
+     * @param {HTMLElement} [tag] An HTML element to convert to an HTMLTag. NOTE: Defining a tag skips construction. Type does not have to be defined if tag is defined
      */
-    constructor(type, attributes, parent, children) {
+    constructor(type, attributes, parent, children, tag) {
         //store input
         this._type = type
         this._attributes = attributes
         this._parent = parent
         this._children = children
+        this._tag = tag
+
+        //skip construction if tag is defined
+        if(tag) return this
 
         //create element
         this._tag = document.createElement(this._type)
@@ -193,6 +198,17 @@ class HTMLTag {
 
     get tag() {
         return this._tag
+    }
+
+    /**
+     * Duplicates object and all children
+     * @returns {HTMLTag} Duplicated element
+     */
+    duplicate() {
+        //clone self and format as HTMLTag
+        let dupedTag = new HTMLTag(undefined, undefined, undefined, undefined, this.tag.cloneNode(true))
+        dupedTag.parent = this.parent
+        return dupedTag
     }
 
     /**

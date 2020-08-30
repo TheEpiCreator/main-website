@@ -1,3 +1,7 @@
+::-root {
+    --palette-background: #111111
+}
+
 body {
     margin: 0;
     background: var(--palette-background);
@@ -12,12 +16,20 @@ body {
     display: none;
 }
 
+.invisible {
+    display: none;
+}
+
+.pseudo-invisible {
+    opacity: 0;
+}
+
 /* main content */
 
 #mainImage {
     image-resolution: 100vw;
     width: 100%;
-    max-height: 30vh;
+    max-height: 25vw;
     object-fit: cover;
     margin: 0;
     padding: 0;
@@ -65,13 +77,21 @@ header {
     background: var(--palette-contrast);
     margin: 0;
     padding: 0;
-    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 500ms ease-out
 }
 
 header::after {
     content: '';
     display: table;
     clear: both;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.4);
 }
 
 .toolbar-image {
@@ -101,7 +121,7 @@ header::after {
     color: var(--palette-dark);
     text-decoration: none;
     font-size: 1em;
-    transition: 300ms;
+    transition: background-color 300ms ease;
 }
 
 .toolbar-item-container a:hover {
