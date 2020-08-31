@@ -10,23 +10,41 @@
             }
         },
         "logWarn": {
-            "text":"Warning",
-            "style":""
+            "text": "Warning",
+            "style": ""
+        },
+        "footer": {
+            "attributions": [
+                {
+                    "item": "Navbar icons",
+                    "authors": [
+                        {
+                            "name": "Freepik",
+                            "link": "https://www.flaticon.com/authors/freepik"
+                        }
+                    ],
+                    "site": {
+                        "name": "Flaticon",
+                        "link": "https://www.flaticon.com/"
+                    }
+                }
+            ]
         },
         "toolbar": [
             {
+                "name": "THIS WEBSITE IS STILL UNDER CONSTRUCTION",
+                "href": "#"
+            },
+            {
                 "name": "Home",
-                "type": "link",
                 "href": "/"
             },
             {
                 "name": "404",
-                "type": "link",
                 "href": "404"
             },
             {
                 "name": "Test",
-                "type": "link",
                 "href": "test"
             }
         ],

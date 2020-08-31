@@ -12,9 +12,6 @@ if (filepath) {
     else filepath = "/"
 }
 
-//theme
-var theme = "dark"
-
 ping = (path, callback) => {
     //ping server
     fetch(path).then(response => {
@@ -32,12 +29,6 @@ ping("data/commonElements.json", data => {
     populateSite(data.site)
     //add main content, select dir
     populateContent(data.pageContents[filepath])
-})
-
-//ping server for theme palettes
-ping("data/palettes.json", data => {
-    //apply themes
-    populateTheme(data)
 })
 
 /**
@@ -104,59 +95,29 @@ var switchImageRes = (image) => {
 
 /**
  * Populates toolbar with menu elements according to elementMap
- * @param {HTMLTag} toolbar The object to be populated
+ * @param {HTMLTag} navbar The object to be populated
  * @param {Object|JSON} elementMap The information used to populate the toolbar
- * @param {String} prefix The prefix used in the element IDs and classes
  * @returns an array of the populated elements
  */
-var populateToolbar = (toolbar, elementMap, prefix) => {
-    //create toolbar|create header
-    var header = new HTMLTag("header", { id: "sticky" })
-    //push header to top
-    header.toPosition("first")
-    //create container
-    let toolbarContainer = new HTMLTag("div", { class: "toolbar-container" }, header.tag)
-
-    //create image element
-    //let toolbarImage = new HTMLTag("img", {src:"images/placeholder.jpg", alt:"toolbar image", class:"toolbar-image"}, toolbarContainer.tag)
-
-    //create navbar element
-    let navbarElement = new HTMLTag("nav", undefined, toolbarContainer.tag)
-    //create toolbar list
-    var toolbar = new HTMLTag("ul", { id: "toolbar", class: "toolbar" }, navbarElement.tag)
-
-
+var populateToolbar = (navbar, elementMap) => {
+    //get toolbar list
+    var navbar = new HTMLTag(document.getElementById("navbar-list"))
 
     let populatedElements = []
 
     //loop through array (and each element in the elementMap)
-    for (var i = 0; i < elementMap.length; i++) {
-        //do different things based on type
-        switch (elementMap[i].type) {
-            case "link":
-                //create link element
-                populatedElements.push(new HTMLTag("li", { class: "toolbar-item-container" }, toolbar.tag, [new HTMLTag("a", { class: "toolbar-item", href: elementMap[i].href }, undefined, [elementMap[i].name]).tag]))
-                break
-            case "button":
-                //create button element
-                populatedElements.push(new HTMLTag("li", { class: "toolbar-item-container" }, toolbar.tag, [new HTMLTag("button", { class: "toolbar-item", onclick: elementMap[i].onclick }, undefined, [elementMap[i].name]).tag]))
-                break
-            case "dropdown":
-                //define content container for dropdown for later use
-                let dropdownContentContainer = new HTMLTag("ul", { class: "toolbar-item" })
-                //create dropdown menu and add content container as child
-                populatedElements.push(new HTMLTag("li", { class: "toolbar-item-container" }, toolbar.tag, [elementMap[i].name, dropdownContentContainer.tag]))
-                //populate dropdown menu
-                populateToolbar(dropdownContentContainer, elementMap[i].contents, "dropdown")
-                break
-            default:
-                console.warn("Unrecognized element type provided, appending nothing to toolbar")
-                break
-        }
+    for (let item of elementMap) {
+        populatedElements.push(new HTMLTag("li", { class: "toolbar-item-container" }, navbar.tag, [new HTMLTag("a", { class: "toolbar-item", href: item.href }, undefined, [item.name]).tag]))
     }
-    let spacer = header.duplicate()
-    spacer.attributes = { id: "spacer", class: "pseudo-invisible invisible" }
-    return header
+    //let spacer = navbar
+    //    .duplicate()
+    //spacer.attributes = { id: "spacer", class: "pseudo-invisible invisible" }
+    
+    //move footer down
+    new HTMLTag(document.getElementById("footer"))
+        .toPosition("last")
+
+    return navbar
 }
 
 /**
@@ -165,9 +126,9 @@ var populateToolbar = (toolbar, elementMap, prefix) => {
  */
 var populateFonts = (fontLinks) => {
     //loop through fonts
-    for (var i = 0; i < fontLinks.length; i++) {
+    for (let item of fontLinks) {
         //add fonts (ex. <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet"> )
-        new HTMLTag("link", { rel: "stylesheet", href: fontLinks[i] }, document.head)
+        new HTMLTag("link", { rel: "stylesheet", href: item }, document.head)
     }
 }
 
@@ -211,7 +172,7 @@ var populateContent = (content) => {
     }
 
     //create container for content
-    var contentContainer = new HTMLTag("main", { id: "contentContainer" }, undefined, contentArray)
+    var contentContainer = new HTMLTag(document.getElementById("contentcontainer"), contentArray)
 
     //set title
     document.getElementById("title").appendChild(document.createTextNode(content.title))
@@ -237,28 +198,4 @@ var populateSite = (data) => {
 
     //log contents
     console.log(data.logWarn.text, data.logWarn.style)
-}
-
-/**
- * Automatically creates a CSS element to set site's theme color palette
- * @param {Arrray} palette The array of hex colors
- */
-var populateTheme = (palette) => {
-    if(!paletteStylesheet){
-        var paletteStylesheet = new CSSStyle({})
-    }
-    //set style
-    let style = {
-        ":root": {
-            "--main":palette[theme].main,
-            "--main-mod":palette[theme].main_mod,
-            "--background":palette[theme].background,
-            "--background-mod":palette[theme].background_mod,
-            "--contrast":palette[theme].contrast,
-            "--contrast-mod":palette[theme].contrast_mod,
-            "--main-invert":palette[theme].main_invert,
-        }
-    }
-    paletteStylesheet.css = style
-    return paletteStylesheet
 }
