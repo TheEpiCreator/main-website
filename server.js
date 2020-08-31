@@ -1,3 +1,4 @@
+const http2 = require('http2')
 const http = require('http')
 const https = require('https')
 const express = require('express')
@@ -6,7 +7,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const { resolveMx } = require('dns')
 const app = express()
-//ports are as follows: [HTTP, HTTPS, Port8080(HTTP)]
+//ports are as follows: [HTTP, HTTP-ALT (8080), HTTPS]
 const ports = [80, 8080, 443]
 //list of all active servers
 var servers = []
@@ -74,6 +75,6 @@ servers.push(http.createServer(app)
     .listen(ports[1], () => console.log(`HTTP:// Listening at port ${ports[1]}`)))
 //secure
 if (settings.production && httpsOptions) {
-    servers.push(https.createServer(httpsOptions, app)
+    servers.push(https.createSecureServer(httpsOptions, app)
         .listen(ports[2], () => console.log(`HTTPS:// Listening at port ${ports[2]}`)))
 }

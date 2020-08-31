@@ -1,14 +1,14 @@
 ::-root {
-    --palette-background: #111111
+    --background: #111111
 }
 
 body {
     margin: 0;
-    background: var(--palette-background);
+    background: var(--background);
     font-family: 'Montserrat', 'Poppins', sans-serif;
     font-weight: 80;
     line-height: 1.5em;
-    color: var(--palette-dark);
+    color: var(--main-invert);
     text-rendering: optimizeLegibility;
 }
 
@@ -37,7 +37,7 @@ body {
 }
 
 main {
-    background: var(--palette-main);
+    background: var(--main);
     padding: 1.5em 2vw;
     margin: 4vw;
     min-height: 5em;
@@ -52,7 +52,7 @@ main {
     font-size: 1em;
     font-weight: 700;
     text-align: center;
-    color: var(--palette-background-mod);
+    color: var(--background-mod);
 }
 
 .subtext {
@@ -61,7 +61,7 @@ main {
     font-style: normal;
     font-weight: 600;
     text-align: center;
-    color: var(--palette-dark);
+    color: var(--main-invert);
     margin: 2vmin;
 }
 
@@ -74,7 +74,7 @@ main {
 }
 
 header {
-    background: var(--palette-contrast);
+    background: var(--contrast);
     margin: 0;
     padding: 0;
     box-shadow: -0px -5px 7px 10px rgba(0, 0, 0, 0.5);
@@ -116,12 +116,12 @@ header::after {
     margin: 0;
     position: relative;
     transition: 130ms;
-    color: var(--palette-dark);
+    color: var(--main-invert);
     text-decoration: none;
     font-size: 1em;
     transition: background-color 300ms ease;
 }
 
 .toolbar-item-container a:hover {
-    background-color: var(--palette-contrast-mod);
+    background-color: var(--contrast-mod);
 }

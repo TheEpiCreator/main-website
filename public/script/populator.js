@@ -12,6 +12,9 @@ if (filepath) {
     else filepath = "/"
 }
 
+//theme
+var theme = "dark"
+
 ping = (path, callback) => {
     //ping server
     fetch(path).then(response => {
@@ -25,10 +28,8 @@ ping = (path, callback) => {
 }
 //ping server for population elements
 ping("data/commonElements.json", data => {
-    //populate toolbar using toolbar data
-    populateToolbar(toolbar, data.toolbar, "toolbar")
-    //add fonts using toolbar data
-    populateFonts(data.fonts)
+    //add site content
+    populateSite(data.site)
     //add main content, select dir
     populateContent(data.pageContents[filepath])
 })
@@ -224,11 +225,18 @@ var populateContent = (content) => {
     //populate webcrawler directives
     document.getElementsByName("robots")[0].setAttribute("content", content.botDirectives)
 
-    //log contents
-    console.log(content.site.logWarn.text, content.site.logWarn.style)
-
     //return contents
     return contentArray
+}
+
+var populateSite = (data) => {
+    //populate toolbar using toolbar data
+    populateToolbar(toolbar, data.toolbar, "toolbar")
+    //add fonts using toolbar data
+    populateFonts(data.fonts)
+
+    //log contents
+    console.log(data.logWarn.text, data.logWarn.style)
 }
 
 /**
@@ -236,17 +244,21 @@ var populateContent = (content) => {
  * @param {Arrray} palette The array of hex colors
  */
 var populateTheme = (palette) => {
+    if(!paletteStylesheet){
+        var paletteStylesheet = new CSSStyle({})
+    }
     //set style
     let style = {
         ":root": {
-            "transition-properties": "",
-            "transition-duration": "400ms",
-            "transition-timing-function": "linear",
+            "--main":palette[theme].main,
+            "--main-mod":palette[theme].main_mod,
+            "--background":palette[theme].background,
+            "--background-mod":palette[theme].background_mod,
+            "--contrast":palette[theme].contrast,
+            "--contrast-mod":palette[theme].contrast_mod,
+            "--main-invert":palette[theme].main_invert,
         }
     }
-    //add palette item
-    for(let i in Object.keys){
-        
-    }
-    return new CSSStyle(style)
+    paletteStylesheet.css = style
+    return paletteStylesheet
 }
